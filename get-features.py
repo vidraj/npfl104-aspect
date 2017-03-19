@@ -21,7 +21,7 @@ for techlemma in sys.stdin:
 	match = split_lemma_suffixes.match(techlemma)
 	(lemma, homonym_number, explanation, technical_suffixes) = match.groups(default='')
 	
-	if "_:T" and "_:W" in technical_suffixes:
+	if ("_:T" in technical_suffixes) and ("_:W" in technical_suffixes):
 		aspect = Aspect.BOTH
 	elif "_:T" in technical_suffixes:
 		aspect = Aspect.IMPERF
@@ -34,4 +34,4 @@ for techlemma in sys.stdin:
 		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % lemma)
 		continue
 	
-	print("%s,%s" % (lemma, aspect.value))
+	print("%s,%d" % (lemma, aspect.value))
