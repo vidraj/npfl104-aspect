@@ -6,8 +6,8 @@ from enum import Enum, unique
 
 @unique
 class Aspect(Enum):
-	IMPERF = 0
-	PERF = 1
+	PERF = 0
+	IMPERF = 1
 	BOTH = 2
 	UNK = 3
 
