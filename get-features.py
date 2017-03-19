@@ -35,4 +35,5 @@ for techlemma in sys.stdin:
 		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % techlemma)
 		continue
 	
-	print("%s,%d" % (lemma, aspect.value))
+	print(','.join((lemma,
+		        str(aspect.value))))
