@@ -31,7 +31,8 @@ for techlemma in sys.stdin:
 		aspect = Aspect.UNK
 	
 	if aspect not in (Aspect.IMPERF, Aspect.PERF):
-		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % lemma)
+		# TODO if Aspect.BOTH, should we print the same features twice, once for IMPERF and once for PERF?
+		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % techlemma)
 		continue
 	
 	print("%s,%d" % (lemma, aspect.value))
