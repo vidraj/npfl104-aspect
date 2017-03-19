@@ -1,0 +1,6 @@
+# Ignore buildable files
+derinet-*.tsv
+features-shuffled.csv
+features.csv
+test.txt
+train.txt
