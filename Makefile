@@ -19,14 +19,18 @@ $(DERINET_FILE):
 	# Download the dataset from whatever source.
 	curl --compressed --output "$@" "https://jonys.cz/derinet/search/$(DERINET_FILE)"
 
-features.csv: $(DERINET_FILE) get-features.py
+features.csv: verbs.txt get-features.py
 	# Prepare the downloaded dataset, reformatting as needed, cleaning as needed. Produce:
 	#  Line-oriented CSV
 	#  The last item on each line is the expected answer.
 	
-	# Retrieve only lexemes corresponding to verbs, cut out just the techlemma
-	#  and get some features from the verbs.
-	grep '	V	[0-9]*$$' "$<" | cut -f3 | ./get-features.py > "$@"
+	
+	# Get some features from the verbs.
+	./get-features.py < "$<" > "$@"
+
+verbs.txt: $(DERINET_FILE)
+	# Retrieve only lexemes corresponding to verbs and cut out just the techlemma
+	grep '	V	[0-9]*$$' "$<" | cut -f3 > "$@"
 
 features-shuffled.csv: features.csv get-seeded-random.sh
 	# Shuffle the dataset with a seeded chaotic process
