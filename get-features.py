@@ -31,15 +31,23 @@ for techlemma in sys.stdin:
 	else:
 		aspect = Aspect.UNK
 	
-	if aspect not in (Aspect.IMPERF, Aspect.PERF):
-		# TODO if Aspect.BOTH, should we print the same features twice, once for IMPERF and once for PERF?
+	if aspect == Aspect.UNK:
 		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % techlemma)
 		continue
 	
 	node = {"lemma": lemma,
 	        "aspect": aspect}
 	
-	data.append(node)
+	if aspect == Aspect.BOTH:
+		# Print the same features twice, once for PERF and once for IMPERF.
+		node["aspect"] = Aspect.PERF
+		data.append(node)
+		
+		node = dict(node)
+		node["aspect"] = Aspect.IMPERF
+		data.append(node)
+	else:
+		data.append(node)
 	
 	#print(','.join((lemma,
 	                ##str(suffix_id),
