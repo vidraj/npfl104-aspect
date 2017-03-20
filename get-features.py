@@ -3,6 +3,7 @@
 import sys
 import re
 from enum import Enum, unique
+from sklearn import preprocessing
 
 @unique
 class Aspect(Enum):
@@ -10,6 +11,10 @@ class Aspect(Enum):
 	IMPERF = 1
 	BOTH = 2
 	UNK = 3
+
+
+last_letter_count = 4
+
 
 # Split the techlemma into basic groups.
 # See https://ufal.mff.cuni.cz/pdt2.0/doc/manuals/en/m-layer/html/ch02s01.html for explanations.
@@ -35,8 +40,15 @@ for techlemma in sys.stdin:
 		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % techlemma)
 		continue
 	
+	
+	last_letters = lemma[-last_letter_count:]
+	# If len(last_letters) < last_letter_count: pad last_letters with spaces from the left.
+	last_letters = " "*(last_letter_count - len(last_letters)) + last_letters
+	
 	node = {"lemma": lemma,
-	        "aspect": aspect}
+	        "aspect": aspect,
+	        "last_letters": last_letters,
+	        "last_letters_onehot": []}
 	
 	if aspect == Aspect.BOTH:
 		# Print the same features twice, once for PERF and once for IMPERF.
@@ -53,7 +65,21 @@ for techlemma in sys.stdin:
 	                ##str(suffix_id),
 	                #str(aspect.value))))
 
+# Transform each of the last letters to one-hot encoding.
+#onehot_features = None
+for i in range(last_letter_count):
+	# Get a column of i-th letters from the data
+	letter_list = [item["last_letters"][i] for item in data]
+	#sys.stderr.write(str(letter_list))
+	
+	# Transform this column into one-hot encoding
+	onehot_letter = preprocessing.LabelBinarizer().fit_transform(letter_list)
+	
+	for (node, onehot_current) in zip(data, onehot_letter):
+		node["last_letters_onehot"].extend(onehot_current)
+
 # Go over the saved data and print the values.
 for item in data:
 	print(','.join((item["lemma"],
+	                ",".join([str(b) for b in item["last_letters_onehot"]]),
 	                str(item["aspect"].value))))
