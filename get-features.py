@@ -2,6 +2,7 @@
 
 import sys
 import re
+import copy
 from enum import Enum, unique
 from sklearn import preprocessing
 
@@ -55,7 +56,8 @@ for techlemma in sys.stdin:
 		node["aspect"] = Aspect.PERF
 		data.append(node)
 		
-		node = dict(node)
+		# Copy the node and create an independent list of last letters.
+		node = copy.deepcopy(node)
 		node["aspect"] = Aspect.IMPERF
 		data.append(node)
 	else:
