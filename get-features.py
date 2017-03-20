@@ -14,8 +14,9 @@ class Aspect(Enum):
 # Split the techlemma into basic groups.
 # See https://ufal.mff.cuni.cz/pdt2.0/doc/manuals/en/m-layer/html/ch02s01.html for explanations.
 split_lemma_suffixes = re.compile("^([^_`-]+)(-\d+)?(`[^_]+)?(_.*)?$")
+data = []
 
-# Go over the input, retrieving and printing features for each line.
+# Go over the input, retrieving and saving features for each line.
 for techlemma in sys.stdin:
 	techlemma = techlemma.rstrip()
 	match = split_lemma_suffixes.match(techlemma)
@@ -35,5 +36,16 @@ for techlemma in sys.stdin:
 		#sys.stderr.write("Skipping lemma '%s': no aspectual information found.\n" % techlemma)
 		continue
 	
-	print(','.join((lemma,
-		        str(aspect.value))))
+	node = {"lemma": lemma,
+	        "aspect": aspect}
+	
+	data.append(node)
+	
+	#print(','.join((lemma,
+	                ##str(suffix_id),
+	                #str(aspect.value))))
+
+# Go over the saved data and print the values.
+for item in data:
+	print(','.join((item["lemma"],
+	                str(item["aspect"].value))))
