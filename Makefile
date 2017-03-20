@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 .PHONY: all download prepare split visualize show clean
 
-DERINET_FILE := derinet-1-3.tsv
+DERINET_FILE := derinet-1-4b1.tsv
 
 # TODO
 all: split
@@ -52,5 +52,5 @@ train.txt: features-shuffled.csv test.txt
 
 
 clean:
-# 	rm -f $(DERINET_FILE)
+# 	rm -f derinet-*.tsv
 	rm -f features.csv features-shuffled.csv train.txt test.txt
