@@ -27,6 +27,10 @@ features.csv: verbs.txt get-features.py
 	# Get some features from the verbs. Also creates "header.txt"
 	./get-features.py < "$<" > "$@"
 
+features-with-header.csv: features.csv
+	cp header.txt "$@"
+	cat "$<" >> "$@"
+
 verbs.txt: $(DERINET_FILE)
 	# Retrieve only lexemes corresponding to verbs and cut out just the techlemma
 	grep '	V	[0-9]*$$' "$<" | cut -f3 > "$@"
@@ -48,7 +52,9 @@ train.txt: features-shuffled.csv test.txt
 	tail -n +$$(echo `wc -l < test.txt` + 1 |bc) "$<" |cut -d, -f1 > train-labels.txt
 
 
-
+correlations.png: features-with-header.csv draw-correlation.py
+	# Draw a matrix of correlations between selected features and the output class.
+	./draw-correlation.py "$<"
 
 
 

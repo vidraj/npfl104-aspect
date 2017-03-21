@@ -18,7 +18,7 @@ if __name__ == "__main__":
     # correlation
     corr = df.corr()
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(16,12))
     ax = fig.add_subplot(111)
     cax = ax.matshow(corr, vmin=-1, vmax=1)
     fig.colorbar(cax)
@@ -28,4 +28,5 @@ if __name__ == "__main__":
     ax.set_xticklabels(names)
     ax.set_yticklabels(names)
 
-    plt.show()
+    #plt.show()
+    plt.savefig("correlations.png")
