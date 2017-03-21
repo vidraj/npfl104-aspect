@@ -20,7 +20,7 @@ class Aspect(Enum):
 split_lemma_suffixes = re.compile("^([^_`-]+)(-\d+)?(`[^_]+)?(_.*)?$")
 max_n = 4
 min_freq = 1000
-with_header = False
+header_fname = 'header.txt'
 
 def make_ngrams(word, max_n):
     ngram_list = []
@@ -69,10 +69,10 @@ if __name__ == "__main__":
 
     feature_list = np.asarray(sorted(feature_counter, key=feature_counter.get, reverse=True))
 
-    if with_header:
-        print('lemma', end=',')
-        print(*feature_list, sep=',', end=',')
-        print('class')
+    with open(header_fname, 'w', encoding='utf-8') as header_file: 
+        print('lemma', end=',', file=header_file)
+        print(*feature_list, sep=',', end=',', file=header_file)
+        print('class', file=header_file)
 
     for item in ngrammed_data:
         print(item[-2], end=',')

@@ -53,4 +53,4 @@ train.txt: features-shuffled.csv test.txt
 
 clean:
 # 	rm -f derinet-*.tsv
-	rm -f features.csv features-shuffled.csv train.txt test.txt
+	rm -f features.csv features-shuffled.csv train.txt test.txt header.txt
