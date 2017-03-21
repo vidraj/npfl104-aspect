@@ -3,17 +3,16 @@ SHELL := /bin/bash
 
 DERINET_FILE := derinet-1-4b1.tsv
 
-# TODO
-all: split
+all: split visualize
 
 download: $(DERINET_FILE)
 prepare: features.csv
 split: train.txt test.txt
-visualize: # TODO
+visualize: correlations.png
 	# Prepare PDF/PNG plots describing the training data, include a least-squares fit of something.
-show: # TODO
+show: correlations.png
 	# Just run your favourite image viewer on the files created by make visualize.
-	# TODO
+	gwenview "$^"
 
 $(DERINET_FILE):
 	# Download the dataset from whatever source.
@@ -32,11 +31,11 @@ features-with-header.csv: features.csv
 	cat "$<" >> "$@"
 
 verbs.txt: $(DERINET_FILE)
-	# Retrieve only lexemes corresponding to verbs and cut out just the techlemma
+	# Retrieve only lexemes corresponding to verbs and cut out just the techlemma.
 	grep '	V	[0-9]*$$' "$<" | cut -f3 > "$@"
 
 features-shuffled.csv: features.csv get-seeded-random.sh
-	# Shuffle the dataset with a seeded chaotic process
+	# Shuffle the dataset with a seeded chaotic process.
 	shuf --random-source=<(./get-seeded-random.sh 12345) "$<" > "$@"
 
 test.txt: features-shuffled.csv
