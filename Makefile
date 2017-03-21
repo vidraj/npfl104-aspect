@@ -24,8 +24,7 @@ features.csv: verbs.txt get-features.py
 	#  Line-oriented CSV
 	#  The last item on each line is the expected answer.
 	
-	
-	# Get some features from the verbs.
+	# Get some features from the verbs. Also creates "header.txt"
 	./get-features.py < "$<" > "$@"
 
 verbs.txt: $(DERINET_FILE)
@@ -37,12 +36,16 @@ features-shuffled.csv: features.csv get-seeded-random.sh
 	shuf --random-source=<(./get-seeded-random.sh 12345) "$<" > "$@"
 
 test.txt: features-shuffled.csv
-	# Take the first 1/8 of the shuffled file.
-	head -n $$(echo `wc -l < "$<"` / 8 |bc) "$<" > "$@"
+	# Take the first 1/8 of the shuffled file, delete the labels.
+	head -n $$(echo `wc -l < "$<"` / 8 |bc) "$<" |cut -d, -f2- > "$@"
+	# Put the labels in a separate file.
+	head -n $$(echo `wc -l < "$<"` / 8 |bc) "$<" |cut -d, -f1 > test-labels.txt
 
 train.txt: features-shuffled.csv test.txt
-	# Take whatever is not in test.txt.
-	tail -n +$$(echo `wc -l test.txt |sed -e 's/ .*//'` + 1 |bc) "$<" > "$@"
+	# Take whatever is not in test.txt, delete the labels.
+	tail -n +$$(echo `wc -l < test.txt` + 1 |bc) "$<" |cut -d, -f2- > "$@"
+	# Put the labels in a separate file.
+	tail -n +$$(echo `wc -l < test.txt` + 1 |bc) "$<" |cut -d, -f1 > train-labels.txt
 
 
 
@@ -53,4 +56,4 @@ train.txt: features-shuffled.csv test.txt
 
 clean:
 # 	rm -f derinet-*.tsv
-	rm -f features.csv features-shuffled.csv train.txt test.txt header.txt
+	rm -f verbs.txt features.csv features-shuffled.csv train.txt test.txt train-labels.txt test-labels.txt header.txt
