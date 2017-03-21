@@ -1,0 +1,12 @@
+# Aspect
+
+Predict the aspect of verbs.
+
+Format:
+	Features are binary values specifying whether an n-gram described by the feature occurs in the verb.
+	Output value (the last boolean on each line) specifies aspect: 0 == perfective, 1 == imperfective.
+
+Names of the verbs (the data labels) are in {test,train}-labels.txt
+Header describing the n-grams is in header.txt
+To get the complete dataset with labels and the header in place, run
+$ cp header.txt complete-data.txt && paste -d, {test,train}-labels.txt {test,train}.txt >> complete-data.txt
