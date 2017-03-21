@@ -5,3 +5,8 @@ features.csv
 test.txt
 train.txt
 verbs.txt
+correlations.png
+features-with-header.csv
+header.txt
+test-labels.txt
+train-labels.txt
