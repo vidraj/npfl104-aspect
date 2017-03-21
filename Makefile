@@ -61,4 +61,4 @@ correlations.png: features-with-header.csv draw-correlation.py
 
 clean:
 # 	rm -f derinet-*.tsv
-	rm -f verbs.txt features.csv features-shuffled.csv train.txt test.txt train-labels.txt test-labels.txt header.txt
+	rm -f verbs.txt features.csv features-shuffled.csv features-with-header.csv train.txt test.txt train-labels.txt test-labels.txt header.txt correlations.png
