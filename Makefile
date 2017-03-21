@@ -38,12 +38,15 @@ features-shuffled.csv: features.csv get-seeded-random.sh
 
 test.txt: features-shuffled.csv
 	# Take the first 1/8 of the shuffled file.
-	head -n $$(echo `wc -l < "$<"` / 8 |bc) "$<" > "$@"
+	head -n $$(echo `wc -l < "$<"` / 8 |bc) "$<" > tmp.txt
+	cat header.txt tmp.txt > "$@"
+	rm tmp.txt
 
 train.txt: features-shuffled.csv test.txt
 	# Take whatever is not in test.txt.
-	tail -n +$$(echo `wc -l test.txt |sed -e 's/ .*//'` + 1 |bc) "$<" > "$@"
-
+	tail -n +$$(echo `wc -l test.txt |sed -e 's/ .*//'` + 1 |bc) "$<" > tmp.txt
+	cat header.txt tmp.txt > "$@"
+	rm tmp.txt
 
 
 
